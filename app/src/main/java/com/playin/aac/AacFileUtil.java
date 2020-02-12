@@ -22,10 +22,10 @@ public class AacFileUtil {
 //        File file = new File(context.getExternalFilesDir(null), "accdump-ffmpeg.apv");
         Log.e(TAG, "------>  " + file.getAbsolutePath());
         try {
-//            if (file.exists()) {
-//                file.delete();
-//            }
-//            file.createNewFile();
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
             rafile = new RandomAccessFile(file, "rw");
         } catch (Exception e) {
             e.printStackTrace();
