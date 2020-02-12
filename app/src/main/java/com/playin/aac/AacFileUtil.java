@@ -22,10 +22,10 @@ public class AacFileUtil {
 //        File file = new File(context.getExternalFilesDir(null), "accdump-ffmpeg.apv");
         Log.e(TAG, "------>  " + file.getAbsolutePath());
         try {
-            if (file.exists()) {
-                file.delete();
-            }
-            file.createNewFile();
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//            file.createNewFile();
             rafile = new RandomAccessFile(file, "rw");
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,11 +74,24 @@ public class AacFileUtil {
         return null;
     }
 
-    private byte[] intToBytes(int num){
-        return ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(num).array();
+    private byte[] intToBytes(int value){
+//        return ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(value).array();
+
+        byte[] src = new byte[4];
+        src[3] = (byte) ((value >> 24) & 0xFF);
+        src[2] = (byte) ((value >> 16) & 0xFF);
+        src[1] = (byte) ((value >> 8) & 0xFF);
+        src[0] = (byte) (value & 0xFF);
+        return src;
     }
 
-    private int bytesToInt(byte[] bytes){
-        return ByteBuffer.wrap(bytes).order(ByteOrder.BIG_ENDIAN).getInt();
+    private int bytesToInt(byte[] src){
+//        return ByteBuffer.wrap(src).order(ByteOrder.LITTLE_ENDIAN).getInt();
+
+        int value = (int) ((src[0] & 0xFF)
+                | ((src[1] & 0xFF) << 8)
+                | ((src[2] & 0xFF) << 16)
+                | ((src[3] & 0xFF) << 24));
+        return value;
     }
 }

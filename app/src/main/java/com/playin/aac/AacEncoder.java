@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static com.playin.aac.Constant.BIT_RATE;
+import static com.playin.aac.Constant.CHANNEL_COUNT;
 import static com.playin.aac.Constant.MAX_INPUT_SIZE;
 import static com.playin.aac.Constant.MIME_TYPE;
 import static com.playin.aac.Constant.SAMPLE_RATE;
@@ -48,7 +49,7 @@ public class AacEncoder {
         }
         try {
             mCodec = MediaCodec.createByCodecName(mCodecName);
-            MediaFormat mediaFormat = MediaFormat.createAudioFormat(MIME_TYPE, SAMPLE_RATE, 2);
+            MediaFormat mediaFormat = MediaFormat.createAudioFormat(MIME_TYPE, SAMPLE_RATE, CHANNEL_COUNT);
             mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE);
             mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE,MAX_INPUT_SIZE);
             mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);

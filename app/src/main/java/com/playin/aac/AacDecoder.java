@@ -6,6 +6,7 @@ import android.media.MediaFormat;
 import java.nio.ByteBuffer;
 
 import static com.playin.aac.Constant.BIT_RATE;
+import static com.playin.aac.Constant.CHANNEL_COUNT;
 import static com.playin.aac.Constant.MAX_INPUT_SIZE;
 import static com.playin.aac.Constant.MIME_TYPE;
 import static com.playin.aac.Constant.SAMPLE_RATE;
@@ -33,7 +34,7 @@ public class AacDecoder {
             mAudioDecoder = MediaCodec.createDecoderByType(MIME_TYPE);
             MediaFormat format = new MediaFormat();
             format.setString(MediaFormat.KEY_MIME, MIME_TYPE);
-            format.setInteger(MediaFormat.KEY_CHANNEL_COUNT, 2);
+            format.setInteger(MediaFormat.KEY_CHANNEL_COUNT, CHANNEL_COUNT);
             format.setInteger(MediaFormat.KEY_SAMPLE_RATE, SAMPLE_RATE);
             format.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE);
             format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, MAX_INPUT_SIZE);

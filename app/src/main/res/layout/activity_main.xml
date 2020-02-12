@@ -33,8 +33,18 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="80dp"
         android:layout_marginRight="20dp"
-        android:onClick="playAudio"
-        android:text="Play Audio"
+        android:onClick="playAudioWithMediaCodec"
+        android:text="Play With MediaCodec"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:onClick="playAudioWithFFmpeg"
+        android:text="Play With FFmpeg"
         android:textAllCaps="false" />
 
 </LinearLayout>

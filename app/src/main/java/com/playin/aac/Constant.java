@@ -11,4 +11,5 @@ public class Constant {
     public static final int SAMPLE_RATE = 44100;
     public static final int BIT_RATE = 64000;
     public static final int MAX_INPUT_SIZE = 655360;
+    public static final int CHANNEL_COUNT = 2;
 }

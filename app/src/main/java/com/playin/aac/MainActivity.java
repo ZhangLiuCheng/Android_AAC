@@ -14,7 +14,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.Arrays;
 
 import static com.playin.aac.Constant.AUDIO_FORMAT;
+import static com.playin.aac.Constant.BIT_RATE;
 import static com.playin.aac.Constant.CHANNEL_CONFIG;
+import static com.playin.aac.Constant.CHANNEL_COUNT;
 import static com.playin.aac.Constant.SAMPLE_RATE;
 
 public class MainActivity extends AppCompatActivity implements AacEncoder.EncoderListener,
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements AacEncoder.Encode
     private AacEncoder aacEncoder;
     private AacDecoder aacDecoder;
     private PlayAudio playAudio;
+    private FFmpegAAC fFmpegAAC;
 
     private boolean recording;
     private boolean playing;
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements AacEncoder.Encode
         aacEncoder = new AacEncoder(this);
         aacDecoder = new AacDecoder(this);
         playAudio = new PlayAudio();
+        fFmpegAAC = new FFmpegAAC();
+        fFmpegAAC.init(SAMPLE_RATE, CHANNEL_COUNT, BIT_RATE);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements AacEncoder.Encode
         }
     }
 
-    public void playAudio(View view) {
+    public void playAudioWithMediaCodec(View view) {
         playing = true;
         fileUtil.prepareRead();
         new Thread(() -> {
@@ -79,6 +84,33 @@ public class MainActivity extends AppCompatActivity implements AacEncoder.Encode
                 } else {
                     // aac数据通过AacDecoder类解码成pcm,通过pcmData方法回调
                     aacDecoder.decodeAAc(buf, 0, buf.length);
+                }
+            }
+        }).start();
+    }
+
+
+    public void playAudioWithFFmpeg(View view) {
+        playing = true;
+        fileUtil.prepareRead();
+        new Thread(() -> {
+            while (playing) {
+                try {
+                    Thread.sleep(16);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // 读取文件aac数据
+                byte[] buf = fileUtil.readAac();
+                if (buf == null) {
+                    break;
+                } else {
+                    byte[] pcmBuf = fFmpegAAC.decoding(buf, 0, buf.length);
+
+                    Log.e("TAG", " pcmBuf  ---->  " + Arrays.toString(pcmBuf));
+                    if (null != pcmBuf) {
+                        playAudio.playAudioTrack(pcmBuf, 0, pcmBuf.length);
+                    }
                 }
             }
         }).start();
